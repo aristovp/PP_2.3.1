@@ -1,17 +1,15 @@
 package web.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 import web.model.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
 import java.util.List;
 
-@Component
-@Transactional(readOnly = true)
+@Repository
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
@@ -32,22 +30,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    @Transactional
     public void add(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional
-    public void userUpdate(long id, User userUpdate) {
-        User userUpd = getUserById(id);
-        userUpd.setFirstName(userUpdate.getFirstName());
-        userUpd.setLastName(userUpdate.getLastName());
-        userUpd.setEmail(userUpdate.getEmail());
-    }
-
-    @Override
-    @Transactional
     public void deleteUsers(long id) {
         entityManager.createQuery("delete from User where  id=: id")
                 .setParameter("id", id)
